@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Virtual Environment: Why and How? | Larry Blog</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="Virtual Environment: Why and How?">
+<meta name="author" content="Larry">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="This post is based on a Youtube video by teclado, which I belive, is the clearest explanation of virtual environment for python available online.">
+<meta property="og:description" content="This post is based on a Youtube video by teclado, which I belive, is the clearest explanation of virtual environment for python available online.">
+<link rel="canonical" href="http://localhost:4000/new-blog/2023/04/22/venv.html">
+<meta property="og:url" content="http://localhost:4000/new-blog/2023/04/22/venv.html">
+<meta property="og:site_name" content="Larry Blog">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-04-22T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Virtual Environment: Why and How?">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Larry"},"dateModified":"2023-04-22T00:00:00+00:00","datePublished":"2023-04-22T00:00:00+00:00","description":"This post is based on a Youtube video by teclado, which I belive, is the clearest explanation of virtual environment for python available online.","headline":"Virtual Environment: Why and How?","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/new-blog/2023/04/22/venv.html"},"url":"http://localhost:4000/new-blog/2023/04/22/venv.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="assets/images/HKADD.jpeg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/new-blog/assets/css/main.css">
+  <script src="/new-blog/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/new-blog/feed.xml" title="Larry Blog">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/new-blog/">
+  <img class="site-favicon" title="Larry Blog" src="/new-blog/assets/images/HKADD.jpeg" onerror="this.style.display='none'">
+  Larry Blog
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/new-blog/">HOME</a><a class="page-link" href="/new-blog/tags.html">TAGS</a><a class="page-link" href="/new-blog/categories.html">CATEGORIES</a><a class="page-link" href="/new-blog/archives.html">ARCHIVES</a><a class="page-link" href="/new-blog/about.html">ABOUT</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Virtual Environment: Why and How?</h1>
+  <h2 class="post-subtitle"></h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-04-22T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Apr 22, 2023
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 7 mins</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/new-blog/tags.html#Python">#Python</a></div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p>This post is based on a <a href="https://youtu.be/KxvKCSwlUv8">Youtube video</a> by teclado, which I belive, is the clearest explanation of virtual environment for python available online.</p>
+
+<p>Table of Contents:</p>
+
+<ul>
+  <li><a href="#why-do-we-need-virtual-environment-for-python-projects">Why do we need virtual environment for Python projects?</a></li>
+  <li><a href="#python-versions-on-your-mac">Python versions on your Mac</a></li>
+  <li><a href="#default-python-directory">Default python directory</a></li>
+  <li><a href="#install-virtual-environment-for-projects-on-python-3">Install virtual environment for projects on Python 3</a></li>
+  <li><a href="#install-virtual-environment-for-projects-on-python-2">Install virtual environment for projects on Python 2</a></li>
+  <li><a href="#activate-and-de-activate-virtual-environment">Activate and de-activate virtual environment</a></li>
+  <li><a href="#install-3rd-party-libraries-for-the-virtual-environment">Install 3rd party libraries for the virtual environment</a></li>
+  <li><a href="#conclusion">Conclusion</a></li>
+</ul>
+
+<h2 id="why-do-we-need-virtual-environment-for-python-projects">Why do we need virtual environment for Python projects?</h2>
+
+<p>Python is a fast evloving language, you can tell its development pace by looking at the versions released almost every month. The proper functioning of Python projects also rely on a lot of 3rd party libraries, or as people call them, depencies, which are updating quickly along the way as well.</p>
+
+<p>Each version upgrade might be small, but accumulative upgrades eventually lead to fundamental changes to some functions or variables, and the project developed on certain version of Python and libraries may not run correctly in the latest version. Since there are so many versions of Python itself and the 3rd party libraries, your projects will inevitably run into conflicts.</p>
+
+<p>A virtual environment is the way to solve this version conflict problem. Simply put, we put the corresponding version of python and all libraries/depencies into the same file folder with the project, creating a mini environment for the project. Whenver the project run, it runs under this very environment, no matter what other versions the computer are installed, or other projects depend on.</p>
+
+<h2 id="python-versions-on-your-mac">Python versions on your Mac</h2>
+
+<p>You may have installed different versions of Python on your Mac. To check the versions, you type <code class="language-plaintext highlighter-rouge">python</code> in the Terminal, then press <code class="language-plaintext highlighter-rouge">tab</code> button.</p>
+
+<p><img style="display: inline-block; width: 100%; object-fit: cover;" src="https://lh3.googleusercontent.com/9oHAa_hrDpvQyicbZsj7JpWrgLuDf34IgUj6WPc8cPxh6AANPZ-ugSb2lTvo9_RMF_HaRIB_qVTJbf6Lek-KAFJo72duP400lBjSKrvMFOzfo6ds0oKdo8DDg1yojDGp4iPzlTcQ_w=w2400" alt="na"></p>
+
+<p>You can see that I have both python 2 and 3 installed on my Mac, and the exact versions are 2.7 and 3.11, respectively.</p>
+
+<h2 id="default-python-directory">Default python directory</h2>
+
+<p>Now here comes the question, if you key in some python command in the Terminal, which version would the computer use to execute your command?</p>
+
+<p>To find out the answer, we can type <code class="language-plaintext highlighter-rouge">echo $PATH$</code> and press <code class="language-plaintext highlighter-rouge">return</code>:</p>
+
+<p><img style="display: inline-block; width: 100%; object-fit: cover;" src="https://lh3.googleusercontent.com/_l2nHzH2eLwVRsjwbnP7Wc4uplZ_oscGQRasz2TR3SHHRrwUZa5sUgq0cpzKa8qhdA2gYBVAPc4L2a8g8dIUNkZnydfaqQ0HygA0_snW-_bzT9LTCUMvlHRNlnV4mQ2bdGdYRpjkAA=w2400" alt="na"></p>
+
+<p><code class="language-plaintext highlighter-rouge">echo $PATH$</code> gives you a list of directories, each separated by a colon. In layman’s terms, a path (or the search path) is the list of directories that will be searched for anything that you type on the command line.</p>
+
+<p>You can see that the directory of python 3.11 comes before that of 2.7, so theoretically, whatever python command I key in, the system should search any corresponding word in 3.11 versions.</p>
+
+<p><img style="display: inline-block; width: 100%; object-fit: cover;" src="https://lh3.googleusercontent.com/5WNGM-gepNK_Ru6lAjH3ZTlpK38h3k3JeOryJKAX62eH4T7JyFkw24PIMrbHYDbRWzkjDj62jEhBg-aRWKF_PYH-NQ9tK-Qy2iX9jZ677qYkMzRctH3fJrJUcUsuXhrtEOSRj3Nc0w=w2400" alt="insertion sort"></p>
+
+<p>However, here I have a small problem, for whenever I type <code class="language-plaintext highlighter-rouge">python -V</code>, it pops up the older version as below. But anyway, this example shows that we need to keep an eye on the correct version the system will look for when executing our python command.</p>
+
+<h2 id="install-virtual-environment-for-projects-on-python-3">Install virtual environment for projects on Python 3</h2>
+
+<p>Python 3 comes with a very handy command <code class="language-plaintext highlighter-rouge">-m venv</code> to create a virtual environment.</p>
+
+<p>Let’s create a new folder <code class="language-plaintext highlighter-rouge">Project</code>, and under this folder, we have a <code class="language-plaintext highlighter-rouge">hello.py</code> file only.</p>
+
+<p><img style="display: inline-block; width: 100%; object-fit: cover;" src="https://lh3.googleusercontent.com/pw/AJFCJaUgVF6VRZ0cGXCn1cKHzPzsW-XupOjpCBFKgZN_pP3bzuXmzQDXkSy0thIDzES7jguo5bH0e4fQEzgbpcRg7rQ1OMPVj3SqzO6DUGMd57KUWW0v-Yk=w2400" alt="na"></p>
+
+<p><br></p>
+
+<p>Now we want this python project to be run with version 3.  We simply open terminal and go to the <code class="language-plaintext highlighter-rouge">Project</code> folder, then type:</p>
+
+<p><img style="display: inline-block; width: 100%; object-fit: cover;" src="https://lh3.googleusercontent.com/pw/AJFCJaX65pHbIvc18-lFAz8oOd0Qt8dqRsHJESNUpVhAtL4Tw52_Uo7Buv7aZgpAJuCxrYI0aNSS3n65nbCCvvU7cW-QvNnWvAxCkry8waK-KMDcyMbJoJM=w2400" alt="na"></p>
+
+<p>In couple of seconds, the system creates a sub-folder named “my-env” under the <code class="language-plaintext highlighter-rouge">Project</code> folder.</p>
+
+<p><img style="display: inline-block; width: 100%; object-fit: cover;" src="https://lh3.googleusercontent.com/pw/AJFCJaUaTYuzPT8h69pUIgcG7QgQMMfMTfWxgCXYB_HWH3gMcTCw8mFnrPcKmg0_EeMcCe6MEizTsycR4azognKUBi7mypJN2Du1AEmKyVc8uO08MoW_NaE=w2400" alt="insertion sort">
+<br></p>
+
+<p>Open the sub-folder, we can see the system copied python 3.11 and all native libraries into this folder. In another word, it has created all components of a virtual environment for us.</p>
+
+<p><img style="display: inline-block; width: 80%; object-fit: cover;" src="https://lh3.googleusercontent.com/t3uNAu7LixAVa28r6ZC1rrphvkrZp5XyvTPGrSxSJjd1YgNGDMDVw6WbfZOaCEUJUoP8sGmGenyEk9AZ_VC9jdkrBo6pPfFhsmntsLe6PJjheP-sa3JCrsUUCFTHlAtINKWuwwWuWQ=w2400" alt="insertion sort">
+<br></p>
+
+<h2 id="install-virtual-environment-for-projects-on-python-2">Install virtual environment for projects on Python 2</h2>
+
+<p>The basic idea is the same, but in Python 2 we don’t have a <code class="language-plaintext highlighter-rouge">venv</code> commend, but use <code class="language-plaintext highlighter-rouge">virtualenv</code> instead.</p>
+
+<p>First of all, we use <code class="language-plaintext highlighter-rouge">pip</code> to install <code class="language-plaintext highlighter-rouge">virtualenv</code> package. <code class="language-plaintext highlighter-rouge">pip</code> is a Python pacakge manager, usually comes with any Python versions. In terminal, type in:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install virtualenv
+</code></pre></div></div>
+
+<p>Then go to Python 2 project folder, create the components using the following command, and let the system do the remaining job for you:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>virtualenv my-env2
+</code></pre></div></div>
+
+<h2 id="activate-and-de-activate-virtual-environment">Activate and de-activate virtual environment</h2>
+
+<p>It’s very straight forward to activate the virtual environment for a specific project. You simply to the components sub-folder under the project main folder, and run the <code class="language-plaintext highlighter-rouge">activate</code> command. Remember, you need to put <code class="language-plaintext highlighter-rouge">source</code> command before it.</p>
+
+<p><img style="display: inline-block; width: 100%; object-fit: cover;" src="https://lh3.googleusercontent.com/sQJ2X7L7XCFk4GRBWvSM_7SIkRL4FxDHF40o1R3O8-50F1Tlc0BwAFN7Yroezl-_n1ezuyvBoTyKKTmshCuOAKYSRBfiX4fBECJV3ny90m6J4kHaRSEkkl2f0CdNbSUwhhqY-h47rQ=w2400" alt="na"></p>
+
+<p>Once activated, you can tell it from the environment name in parenthesis before the prompt.</p>
+
+<p>After you finish running the project, or you want to switch to another project, you type <code class="language-plaintext highlighter-rouge">deactivate</code> to switch off the virtual environment. The name before the prompt will go away, meaning the previous virtual environment is off.</p>
+
+<h2 id="install-3rd-party-libraries-for-the-virtual-environment">Install 3rd party libraries for the virtual environment</h2>
+
+<p>Now we want to install some 3rd party libraries that our project is going to use. We use <code class="language-plaintext highlighter-rouge">pip</code> to install libraries, and whenever we run <code class="language-plaintext highlighter-rouge">pip</code> under project folder prompt, we want to install them into the virtual environment of the project.</p>
+
+<p>For example, if we want to install <code class="language-plaintext highlighter-rouge">flask</code> to the project, first we have the virtual environment activated, then</p>
+
+<p><img style="display: inline-block; width: 100%; object-fit: cover;" src="https://lh3.googleusercontent.com/h8E1xGP60RWvAxk4klDgMCO0OVNQZFl8jTQ0HApcrGb1kUqDpPEYPy7ognnT9sYryuRvcH9KIj59LW1_VSpP45y9vn9ZbJPzMUKsStP_j6D4WSkKYORrk5dRuln8xq9vvn0YAOho_A=w2400" alt="na"></p>
+
+<p>The <code class="language-plaintext highlighter-rouge">pip</code> package manager will install the latest <code class="language-plaintext highlighter-rouge">flask</code> library to project’s virtual environment.</p>
+
+<p><img style="display: inline-block; width: 80%; object-fit: cover;" src="https://lh3.googleusercontent.com/qdoDYWN7qKvzbgfP9Mwrh7hnExSVw01XY4pTz8PrZMqmxsgKjX-YNULZmLOMdltKlFL7bkvx9Zh1BKlzA75XcKbraYgjPb2mICEMOsdM9to5vuIPKg0dueE2eotelA16lmbN4gCPPg=w2400" alt="na">
+<br></p>
+
+<p>A nice practice to keep 3rd libraries in neat order and easy to track, is to use a text file to record all libraries and their correct versions for the project. As a common practice, we name this text file <code class="language-plaintext highlighter-rouge">requirements.txt</code>, and put this file in the root foler of the project.</p>
+
+<p>The content of the text file usually like this (project sensative);</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>flask==1.1.3
+requests
+gunicorn&gt;=2.3,&lt;3.0
+</code></pre></div></div>
+
+<p>With this txt file, we can in fact install all listed libraries using one line of command:</p>
+
+<p><img style="display: inline-block; width: 100%; object-fit: cover;" src="https://lh3.googleusercontent.com/sTLOdKpDs5IGGBLvRdQjmOnAuA5oFValN9ke0obKBQnJcuqXNqDYz636a1VRbcf-7Q_MYnE3xekf1pfF1PuHYRM9yltHWLsdqAAQC9j9l1yVSuus_RYxq9iRRJxOhrWJh65tOgeBeA=w2400" alt="na"></p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>It’s always a good and conflicts free practice to create virtual environment for each Python project. You cannot be wrong to be conservative.</p>
+
+<p>There are also a lot of tools out there to help create and manage virtual environments for you. But we’d like to have a touch on the basic and keep it as simple and straigth forward as possible.</p>
+
+<p><br></p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/new-blog/y2023/2023/01/15/mortgage.html" title="按揭利率和每期供款">按揭利率和每期供款</a><span></span>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/new-blog/2022/08/30/bubblesort.html" title="">Bubble Sort</a></li>
+<li><a class="post-link" href="/new-blog/2022/08/25/googlefiles.html" title="">Create Google File Dowanload Links in A Different Way</a></li>
+<li><a class="post-link" href="/new-blog/y2022/2022/07/15/lmia.html" title="">LMIA，边境工签和省提名</a></li>
+<li><a class="post-link" href="/new-blog/y2022/2022/06/21/englishnames.html" title="">英文名字的由来</a></li>
+</ul>
+    </div>
+<div class="post-comments"></div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Table of Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/new-blog/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Larry Copyright © 2017-2023</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/new-blog/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
