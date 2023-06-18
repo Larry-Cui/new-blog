@@ -2,7 +2,7 @@
 layout: post
 title: 英文名字的由来
 date: 2022-06-21
-categories: Y2022
+categories: Chn
 tags:
   - English
 published: true

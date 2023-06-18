@@ -2,7 +2,7 @@
 layout: post
 title: 英女王伊丽莎白二世驾崩
 date: 2022-09-08
-categories: Y2022
+categories: Chn
 tags:
   - Life
 published: true

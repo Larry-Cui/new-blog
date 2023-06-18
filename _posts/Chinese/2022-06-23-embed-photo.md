@@ -2,7 +2,7 @@
 layout: post
 title: 如何在网页中嵌入google照片库链接
 date: 2022-06-23
-categories: Y2022
+categories: Chn
 tags:
   - HTML+CSS
 published: true

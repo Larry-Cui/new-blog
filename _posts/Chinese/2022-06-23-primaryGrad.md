@@ -2,7 +2,7 @@
 layout: post
 title: 小学毕业了
 date: 2022-06-23
-categories: Y2022
+categories: Chn
 tags:
   - Life
 published: false
