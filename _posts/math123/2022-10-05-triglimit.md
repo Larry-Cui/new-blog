@@ -2,6 +2,7 @@
 layout: post
 title: Proof of Trigonometry Limit Theorem
 date: 2022-10-05
+categories: Eng
 tags:
   - Math123
 ---

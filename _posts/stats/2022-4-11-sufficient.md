@@ -2,6 +2,7 @@
 layout: post
 title: Sufficient Estimators
 date: 2022-4-11
+categories: Eng
 tags:
   - Stats
 ---

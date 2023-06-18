@@ -2,6 +2,7 @@
 layout: post
 title: Binary Search
 date: 2022-08-31
+categories: Eng
 tags:
   - Algorithms
 ---

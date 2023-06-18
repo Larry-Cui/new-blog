@@ -2,6 +2,7 @@
 layout: post
 title: Compare 99 to the power of 100 and 100 to the power of 99
 date: 2022-10-04
+categories: Eng
 tags:
   - Math123
 ---

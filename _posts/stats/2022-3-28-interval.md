@@ -2,6 +2,7 @@
 layout: post
 title: Interval Estimation
 date: 2022-3-28
+categories: Eng
 tags:
   - Stats
 ---

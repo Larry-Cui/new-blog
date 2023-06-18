@@ -2,6 +2,7 @@
 layout: post
 title: The Geometric Distribution
 date: 2021-9-28
+categories: Eng
 tags:
   - Stats
 ---

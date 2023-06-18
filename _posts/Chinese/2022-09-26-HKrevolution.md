@@ -2,7 +2,7 @@
 layout: post
 title: 时代革命
 date: 2022-09-26
-categories: Y2022
+categories: Chn
 tags:
   - Opinion
 published: true

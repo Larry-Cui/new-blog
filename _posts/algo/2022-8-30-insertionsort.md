@@ -2,6 +2,7 @@
 layout: post
 title: Insertion Sort
 date: 2022-08-30
+categories: Eng
 tags:
   - Algorithms
 ---

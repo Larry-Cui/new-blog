@@ -2,6 +2,7 @@
 layout: post
 title: The Negative Binomial Distribution
 date: 2021-9-29
+categories: Eng
 tags:
   - Stats
 ---

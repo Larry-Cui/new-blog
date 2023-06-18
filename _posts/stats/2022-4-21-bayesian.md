@@ -2,6 +2,7 @@
 layout: post
 title: Bayesian Estimation
 date: 2022-4-21
+categories: Eng
 tags:
   - Stats
 ---

@@ -2,6 +2,7 @@
 layout: post
 title: Pumping Lemma
 date: 2022-09-02
+categories: Eng
 tags:
   - Algorithms
 ---

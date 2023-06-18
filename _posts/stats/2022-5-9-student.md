@@ -2,6 +2,7 @@
 layout: post
 title: Finding Student t Distribution
 date: 2022-5-9
+categories: Eng
 tags:
   - Stats
 ---

@@ -2,6 +2,7 @@
 layout: post
 title: The Definition of Natural e as A Sum of Binomial
 date: 2022-09-24
+categories: Eng
 tags:
   - Math123
 ---

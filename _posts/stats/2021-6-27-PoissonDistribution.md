@@ -2,6 +2,7 @@
 layout: post
 title: Poisson Distribution
 date: 2021-6-30
+categories: Eng
 tags:
   - Stats
 ---

@@ -2,6 +2,7 @@
 layout: post
 title: How to Deduce Stirling Formula
 date: 2021-7-4
+categories: Eng
 tags:
   - Math123
 ---

@@ -2,6 +2,7 @@
 layout: post
 title: Moment Generating Function
 date: 2021-6-25
+categories: Eng
 tags:
   - Stats
 ---
