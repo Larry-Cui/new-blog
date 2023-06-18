@@ -12,6 +12,10 @@ Put the math expression within <span>$</span>...\$:
 
 $\Pi$
 
+This is a separate mathjax:
+
+$ c^2 = a^2 + b^2 $
+
 $ a * b = c ^ b $
 
 $ 2^{\frac{n-1}{3}} $
