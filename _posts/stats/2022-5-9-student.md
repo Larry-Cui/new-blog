@@ -14,4 +14,4 @@ graduate William Sealy Gossett published a paper in 1908 in which he derived a f
 the pdf, and later in 1924 R. A. Fisher presented a rigorous mathematical derivation of Gossett’s
 pdf. Consequently, the pdf is now known as the Student t distribution.
 
-<a href="/pdf/t-final.pdf" target="_blank">Read more</a>
+<a href="{{site.baseurl}}/pdf/t-final.pdf" target="_blank">Read more</a>
