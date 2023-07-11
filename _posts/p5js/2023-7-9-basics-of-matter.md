@@ -12,7 +12,7 @@ tags: p5.js
 
 To use `p5.js` and `Matter.js` on your web pages, you simply add the following script to your `html` file's `<head>` part.
 
-```js
+```html
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js" integrity="sha512-3RlxD1bW34eFKPwj9gUXEWtdSMC59QqIqHnD8O/NoTwSJhgxRizdcFVQhUMFyTp5RwLTDL0Lbcqtl8b7bFAzog==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.min.js" integrity="sha512-WzkwpdWEMAY/W8WvP9KS2/VI6zkgejR4/KTxTl4qHx0utqeyVE0JY+S1DlMuxDChC7x0oXtk/ESji6a0lP/Tdg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js" integrity="sha512-0z8URjGET6GWnS1xcgiLBZBzoaS8BNlKayfZyQNKz4IRp+s7CKXx0yz7Eco2+TcwoeMBa5KMwmTX7Kus7Fa5Uw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -105,6 +105,10 @@ Body.setAngle(object, angle);
 Body.setAngularVelocity(object, angleSpeed);
 angle = angle + angleSpeed;
 ```
+
+If you give an increment to angle every frame, the object will in fact rotate around its center. 
+
+A tricky point, or a "bug" if you think it in a different way, is that rotating object doesn't have angular speed automatically. You must set the angular speed manually by `Body.setAngularVelocity(object, angleSpeed)`. The purpose of this code is to let other objects hitting the rotating one pick the speed and being pushed away at the correct speed. 
 
 ###	friction `friction: 0`
 
@@ -207,7 +211,27 @@ The weird part is the arrow function: why we don't just remove the constraint (`
 
 The answer is due to a "bug" in `Matter.js`. When you remove the constraint from an engine world, the constraint object in fact still stays in the heap of the memory. As a result, it can be retrieved by draw function in the code, and the ugly constraint string will be drawn on the canvas.
 
+## Mouse constraint
 
+Mouse constraint is to set up an interaction relationship between mouse and objects on the canvas. You may want the mouse to interact with only certain objects but not all, which is a topic beyond this post. Please refer to the thread [how to all only a single body to move using matter.js mouse](https://stackoverflow.com/questions/73252974/how-to-allow-only-a-single-body-to-move-using-matter-js-mouse){:target="_blank"} on stack**overflow**.
 
+### Code example
+Here below is the code snippet for mouse interaction.
 
+```js
+function setupMouseInteraction() {
+	const mouse = Mouse.create(canvas.elt);
+	const mouseParams = {
+		mouse: mouse,
+		constraint: { stiffness: 0.05 },
+	};
+	mouseConstraint = MouseConstraint.create(engine, mouseParams);
+	mouseConstraint.mouse.pixelRatio = pixelDensity();
+	World.add(engine.world, mouseConstraint);
+}
+```
 
+### Comments
+
+- We need to tell `Matter.js` where the mouse is on the canvas. This is realized by `Mouse.create(element)` method. Here we use `canvas.elt` directly, because `canvas` is the default `html` element created by `p5.js`. 
+-  Normal display and Apple's Retina display have different pixel density. We need this line `mouseConstraint.mouse.pixelRatio = pixelDensity()` to tell the code what monitor we are using, in order for the computer to read the correct coordinates of the mouse on the canvas. 
